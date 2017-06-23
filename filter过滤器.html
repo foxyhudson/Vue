@@ -50,7 +50,17 @@
             </li>
         </ul>
     </div>
-
+	<!-- 时间转化器 -->
+    <div id="app4">
+        <div>{{ time | timer  }}</div>
+        <div>{{ json | toJson}}</div>
+    </div>
+	<!-- 过滤html -->
+	<!-- <div id="app5">
+        <input type="text" name="" v-model='html2'>
+        <div v-html='html'></div>
+    </div>
+ -->
 	<script src="node_modules/vue/dist/vue.js"></script>
 	<script>
 		// 补0
@@ -75,7 +85,17 @@
 		Vue.filter('lowercase',(str) => {
 			return str.toLowerCase();
 		})
+		//时间转化器 毫秒
+		Vue.filter('timer',(date) => {
+			var oDate =new Date(date);
+			return `${oDate.getFullYear()}-${oDate.getMonth()+1}-${oDate.getDate()} ${oDate.getHours()<10? '0'+oDate.getHours() : oDate.getHours() }:${oDate.getMinutes()<10? '0'+oDate.getMinutes():oDate.getMinutes()}:${oDate.getSeconds()<10? '0'+oDate.getSeconds() : oDate.getSeconds()}`
+		})
 
+		// JSON转字符
+		Vue.filter('toJson',function(json){
+            return JSON.stringify(json)
+        })
+	
 		new Vue({
 			el:'#app',
 			data:{
@@ -141,6 +161,41 @@
 
             }
 		})
+
+		new Vue({
+			el:'#app4',
+			data: {
+                time:Date.now(),
+                json:{name:'peter',age:8}
+            },
+            methods:{
+            	addZero : function(n){
+            		return n<10 ? '0'+n : ''+n;
+            	}
+            }
+		})
+
+
+		// new Vue({
+		// 	el:'#app5',
+		// 	data: {
+  //               html:''
+  //           },
+  //           computed:{
+  //           	html2:{
+  //           		get:function(){
+
+  //           			return this.html.replace(/<[^>]+>/g,"")
+  //           			// this.html.replace(/<[^<+]>/g,'')
+  //           		},
+  //           		set:function(val){
+  //           			// this.html2 = val ;
+  //           			console.log(val)
+  //           			this.html = val
+  //           		}
+  //           	}
+  //           }
+		// })
 	</script>
 </body>
 </html>
